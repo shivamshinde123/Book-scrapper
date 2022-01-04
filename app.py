@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 
 app = Flask(__name__)
 
-driver = webdriver.Chrome('C:\\Users\\shiva\\OneDrive\\Desktop\\Scrapper Project\\chromedriver.exe')
+
 
 @app.route('/')
 def index():
@@ -16,12 +16,16 @@ def index():
 
 @app.route('/results',methods=['GET', 'POST'])
 def results():
+    driver = webdriver.Chrome('C:\\Users\\shiva\\OneDrive\\Desktop\\Scrapper Project\\chromedriver.exe')
     if request.method == 'POST':
         genre = request.form['genre']
         try:
-            conn = pymongo.MongoClient("mongodb+srv://ShivamShinde:S#ivam123@cluster0.9jrmh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-            db = conn['Book Collection']
-            collection = db['book_collection_for_'+genre]
+            try:
+                client = pymongo.MongoClient("mongodb://localhost:27017/")
+                database = client['Book Collection']
+                collection = database['book_collection_for_'+genre]
+            except:
+                print('Could not connect to the database')
 
             try:
                 url = "http://books.toscrape.com/"
@@ -29,20 +33,27 @@ def results():
             except:
                 print('Driver could not get to the website')
 
-            required_genre = driver.find_element(By.LINK_TEXT, genre)
-            required_genre.click()
-            book_details = []
+            try:
+                required_genre = driver.find_element(By.LINK_TEXT, genre)
+                required_genre.click()
+                book_details = []
+            except:
+                print('Could not click on the genre after opening the website')
 
             while True:
-                page_url = driver.current_url()
+
 
                 try:
-                    page_source = requests.get(page_url)
+                    page_url = driver.current_url
+                    page_source = requests.get(page_url).text
                 except:
                     print('Error occurred while getting page source from the website')
 
-                soup = BeautifulSoup(page_source,'lxml')
-                next_btn = soup.find_all('li', class_ = "next")
+                try:
+                    soup = BeautifulSoup(page_source,'lxml')
+                    next_btn = soup.find_all('li', class_ = "next")
+                except:
+                    print('Some error occured')
 
                 try:
                     book_blocks = soup.find_all('article',class_ = "product_pod")
@@ -63,13 +74,16 @@ def results():
                         except:
                             print("Having some error while checking books' availability")
 
-                        book_dict = {book_name:book_name,
-                                     book_price:book_price,
-                                     book_availability:book_availability}
+                        try:
+                            book_dict = {book_name:book_name,
+                                         book_price:book_price,
+                                         book_availability:book_availability}
 
-                        book_details.append(book_dict)
+                            book_details.append(book_dict)
 
-                        collection.insert_one(book_dict)
+                            collection.insert_one(book_dict)
+                        except:
+                            print('Could not save the information to the database')
                     
                     if len(next_btn) > 0:
                         next_button = driver.find_element(By.LINK_TEXT,'next')
@@ -82,7 +96,7 @@ def results():
                     print('Could not find any books on the given genre')
 
             driver.quit()
-            return render_template('results.html', book_details=book_details)
+            return render_template('results.html', book_details=book_details,genre=genre)
 
 
 
