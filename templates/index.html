@@ -1,10 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+
+{% block content %}
+
+
+<div class="container">
+<h1 class="text-center mt-3">Book Recommendation using books.toscrape.com</h1>
+</div>
+
+<div class="container">
+    <h3 class="left m-5">Please select the book genre for recommendation:</h3>
+    <form action="/results" method="post">
+        <select class="w-25 h-75" searchable="Search here.." >
+            <option value="" disabled selected>Genre</option>
+            <option value="1">Travel</option>
+            <option value="2">Mystery</option>
+            <option value="3">Historical Fiction</option>
+            <option value="4">Sequential Art</option>
+            <option value="5">Classics</option>
+            <option value="6">Philosophy</option>
+            <option value="7">Romance</option>
+            <option value="8">Women's Fiction</option>
+            <option value="9">Fiction</option>
+            <option value="10">Children</option>
+            <option value="11">Religion</option>
+            <option value="12">Nonfiction</option>
+            <option value="13">Music</option>
+            <option value="14">Science Fiction</option>
+            <option value="15">Sports and Games</option>
+            <option value="16">Fantasy</option>
+            <option value="17">New Adult</option>
+            <option value="18">Young Adult</option>
+            <option value="19">Science</option>
+            <option value="20">Poetry</option>
+            <option value="21">Paranormal</option>
+            <option value="22">Art</option>
+            <option value="23">Psychology</option>
+            <option value="24">Autobiography</option>
+            <option value="25">Parenting</option>
+            <option value="26">Adult Fiction</option>
+            <option value="27">Humor</option>
+            <option value="28">Horror</option>
+            <option value="29">History</option>
+            <option value="30">Food and Drink</option>
+            <option value="31">Christian Fiction</option>
+            <option value="32">Business</option>
+            <option value="33">Biography</option>
+            <option value="34">Thriller</option>
+            <option value="35">Contemporary</option>
+            <option value="36">Contemporary</option>
+            <option value="37">Spirituality</option>
+            <option value="38">Academic</option>
+            <option value="39">Self Help</option>
+            <option value="40">Historical</option>
+            <option value="41">Christian</option>
+            <option value="42">Suspense</option>
+            <option value="43">Short Stories</option>
+            <option value="44">Novels</option>
+            <option value="45">Health</option>
+            <option value="46">Politics</option>
+            <option value="47">Cultural</option>
+            <option value="48">Erotica</option>
+            <option value="49">Crime</option>
+        </select>
+        <button type="submit" class="btn btn-outline-dark">Submit</button>
+    </form>
+
+</div>
+
+
+
+
+{% endblock %}
