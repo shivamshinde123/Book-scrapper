@@ -49,7 +49,7 @@ def results():
                     page_url = driver.current_url
                     page_source = requests.get(page_url).text
                 except:
-                    print('Error occurred while getting page source from the website')
+                    print('Error occurred while getting page source of the website')
 
                 try:
                     soup = BeautifulSoup(page_source,'lxml')
