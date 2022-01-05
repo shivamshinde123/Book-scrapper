@@ -53,7 +53,7 @@ def results():
                     soup = BeautifulSoup(page_source,'lxml')
                     next_btn = soup.find_all('li', class_ = "next")
                 except:
-                    print('Some error occured')
+                    print('Some error occured while finding the next button on the page ')
 
                 try:
                     book_blocks = soup.find_all('article',class_ = "product_pod")
@@ -65,19 +65,13 @@ def results():
                             print('Having some error while obtaining book name')
 
                         try:
-                            book_price = block.h3.next_sibling.p.text
+                            book_price = block.find('p', class_ = "price_color").text[1:]
                         except:
                             print('Having some error obtaining book price')
 
                         try:
-                            book_availability = block.h3.next_sibling.p.next_sibling.i.next_sibling.text
-                        except:
-                            print("Having some error while checking books' availability")
-
-                        try:
-                            book_dict = {book_name:book_name,
-                                         book_price:book_price,
-                                         book_availability:book_availability}
+                            book_dict = {"book_name":book_name,
+                                         "book_price":book_price}
 
                             book_details.append(book_dict)
 
