@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import pymongo
 import requests
 from bs4 import BeautifulSoup
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -16,7 +17,8 @@ def index():
 
 @app.route('/results',methods=['GET', 'POST'])
 def results():
-    driver = webdriver.Chrome('C:\\Users\\shiva\\OneDrive\\Desktop\\Scrapper Project\\chromedriver.exe')
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    driver = webdriver.Chrome(basedir+"\\chromedriver.exe")
     if request.method == 'POST':
         genre = request.form['genre']
         try:
