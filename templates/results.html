@@ -8,14 +8,12 @@
           <th>Book name</th>
           <th>Genre</th>
           <th>Book price</th>
-          <th>Book Availability</th>
       </tr>
          {% for book in book_details %}
       <tr>
           <td>{{book['book_name']}}</td>
           <td>{{ genre }}</td>
           <td>{{book['book_price']}}</td>
-          <td>{{book['book_availability']}}</td>
        {% endfor %}
       </tr>
    </table>
