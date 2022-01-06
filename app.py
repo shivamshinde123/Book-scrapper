@@ -3,6 +3,7 @@ import pymongo
 import requests
 from bs4 import BeautifulSoup
 import os
+import itertools
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -32,6 +33,7 @@ def results():
             try:
                 url = "http://books.toscrape.com/"
                 driver.get(url)
+                driver.maximize_window()
             except:
                 print('Driver could not get to the website')
 
@@ -43,44 +45,38 @@ def results():
                 print('Could not click on the genre after opening the website')
 
             while True:
-
-
+                page_url = driver.current_url
+                page_source = requests.get(page_url).text
+                soup = BeautifulSoup(page_source, 'lxml')
+                next_btn = soup.find_all('li', class_="next")
+                no_of_book_on_the_page = len(soup.find_all('article', class_ = "product_pod"))
                 try:
-                    page_url = driver.current_url
-                    page_source = requests.get(page_url).text
-                except:
-                    print('Error occurred while getting page source of the website')
-
-                try:
-                    soup = BeautifulSoup(page_source,'lxml')
-                    next_btn = soup.find_all('li', class_ = "next")
-                except:
-                    print('Some error occured while finding the next button on the page ')
-
-                try:
-                    book_blocks = soup.find_all('article',class_ = "product_pod")
-                    for block in book_blocks:
-
+                    for i in range(0,no_of_book_on_the_page):
                         try:
-                            book_name = block.h3.a.text
+                            book_block = driver.find_elements(By.CSS_SELECTOR,"article.product_pod")[i]
+                            book_block.find_elements(By.TAG_NAME,"a")[1].click()
                         except:
-                            print('Having some error while obtaining book name')
+                            print("Could not go to the book home page")
 
                         try:
-                            book_price = block.find('p', class_ = "price_color").text[1:]
+                            book_name = driver.find_element(By.CSS_SELECTOR," div[class='col-sm-6 product_main'] h1").text
+                            book_price = driver.find_element(By.CSS_SELECTOR,".price_color").text
                         except:
-                            print('Having some error obtaining book price')
+                            print("Could not get the book name and book price")
 
                         try:
-                            book_dict = {"book_name":book_name,
-                                         "book_price":book_price}
-
+                            book_dict = {'Book Name':book_name,
+                                         'Book Price':book_price}
                             book_details.append(book_dict)
-
-                            collection.insert_one(book_dict)
                         except:
-                            print('Could not save the information to the database')
-                    
+                            print("Could not add the book name and price to the book_details list")
+
+
+                        try:
+                            driver.back()
+                        except:
+                            print("Could not go back to the genre home page")
+
                     if len(next_btn) > 0:
                         next_button = driver.find_element(By.LINK_TEXT,'next')
                         next_button.click()
