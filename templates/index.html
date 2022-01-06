@@ -11,8 +11,8 @@
 <div class="container">
     <h3 class="left m-5">Please select the book genre for recommendation:</h3>
     <form action="/results" method="post">
-        <select class="w-25 h-75" searchable="Search here.." name="genre">
-            <option value="" disabled selected>Genre</option>
+        <select class="form-select bg-secondary" aria-label="Default select example" name="genre">
+            <option selected>Genre</option>
             <option value="Travel">Travel</option>
             <option value="Mystery">Mystery</option>
             <option value="Historical Fiction">Historical Fiction</option>
@@ -63,7 +63,7 @@
             <option value="Erotica">Erotica</option>
             <option value="Crime">Crime</option>
         </select>
-        <button type="submit" class="btn btn-outline-dark">Submit</button>
+        <button type="submit" class="btn btn-outline-dark btn-lg mt-3">Submit</button>
     </form>
 
 </div>
