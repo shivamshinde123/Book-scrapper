@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import pandas as pd
 import pymongo
 import requests
 from bs4 import BeautifulSoup
@@ -23,6 +24,10 @@ def results():
     if request.method == 'POST':
         ## Getting the genre provided by the user from the html form
         genre = request.form['genre']
+
+        ##creating two lists: one for all the book names and other for all the book prices
+        book_name_list = []
+        book_price_list = []
         try:
             # Connecting to the pymongo atlas
             client = pymongo.MongoClient("mongodb+srv://ShivamShinde:shivam123@cluster0.9jrmh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
@@ -45,6 +50,13 @@ def results():
             # Checking whether the database contains the books details for genre provided by the user
             if collection_length >0:
                 driver.quit()
+                ## Adding the book name and price to the lists to use those list to get scrapped data in csv format later
+                for doc in collection.find():
+                    book_name_list.append(doc['Book Name'])
+                    book_price_list.append(doc['Book Price'])
+                ## creating a csv file of the scrapped data
+                dataframe = pd.DataFrame({"Book Name": book_name_list, "Book Price": book_price_list})
+                dataframe.to_csv(basedir + "\\scrappedData\\booksOnGenre{}.csv".format(genre))
                 return render_template('results.html', book_details=list(collection.find({})),genre=genre)
 
             # If database does not have the data related to the genre provided by the data then browser will be opened to scrape the data
@@ -79,6 +91,8 @@ def results():
 
                     ## Finding the number of books on the page for provided genre
                     no_of_book_on_the_page = len(soup.find_all('article', class_ = "product_pod"))
+
+
                     try:
                         for i in range(0,no_of_book_on_the_page):
                             try:
@@ -91,12 +105,18 @@ def results():
                             try:
                                 ## Finding the book name and book price
                                 book_name = driver.find_element(By.CSS_SELECTOR," div[class='col-sm-6 product_main'] h1").text
-                                book_price = driver.find_element(By.CSS_SELECTOR,".price_color").text
+                                book_price = driver.find_element(By.CSS_SELECTOR, ".price_color").text
+                                ## Adding the book name and price to the lists to use those list to get scrapped data in csv format later
+                                ## Adding book name to the book_name_list
+                                book_name_list.append(book_name)
+                                ## Adding book price to the book_price_list
+                                book_price_list.append(book_price)
+
                             except:
                                 print("Could not get the book name and book price")
 
                             try:
-                                ## creating a dictonary of book name and book price and then adding it to book_details list and mongo db collection for the genre
+                                ## creating a dictionary of book name and book price and then adding it to book_details list and mongo db collection for the genre
                                 book_dict = {'Book Name':book_name,
                                              'Book Price':book_price}
                                 book_details.append(book_dict)
@@ -123,6 +143,8 @@ def results():
                         print('Could not find any books on the given genre')
 
                 driver.quit()
+                dataframe = pd.DataFrame({"Book Name":book_name_list,"Book Price":book_price_list})
+                dataframe.to_csv(basedir+"\\scrappedData\\booksOnGenre{}.csv".format(genre))
                 return render_template('results.html', book_details=book_details,genre=genre)
 
 
