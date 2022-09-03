@@ -23,6 +23,7 @@ def results():
     basedir = os.path.abspath(os.path.dirname(__file__))
     
     ## Creating a chrome driver
+    ## webdriver_manager, by default, tries to download the latest version of a given driver binary. 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     if request.method == 'POST':
         ## Getting the genre provided by the user from the html form
