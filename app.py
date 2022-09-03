@@ -6,8 +6,10 @@ from bs4 import BeautifulSoup
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='templates',static_folder='static')
 
 
 @app.route('/')
@@ -19,8 +21,9 @@ def index():
 def results():
     ## Getting the path of the current file
     basedir = os.path.abspath(os.path.dirname(__file__))
+    
     ## Creating a chrome driver
-    driver = webdriver.Chrome(os.path.join(basedir,"chromedriver.exe"))
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     if request.method == 'POST':
         ## Getting the genre provided by the user from the html form
         genre = request.form['genre']
@@ -29,9 +32,8 @@ def results():
         book_name_list = []
         book_price_list = []
         try:
-            # Connecting to the pymongo atlas
-            client = pymongo.MongoClient("mongodb+srv://ShivamShinde:shivam123@cluster0.9jrmh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-            db = client.test
+            # Connecting to the pymongo atlas        
+            client = pymongo.MongoClient("mongodb://localhost:27017")
 
             # Creating a database which will store the book details
             database_name = "Book_Collection"
@@ -56,7 +58,8 @@ def results():
                     book_price_list.append(doc['Book Price'])
                 ## creating a csv file of the scrapped data
                 dataframe = pd.DataFrame({"Book Name": book_name_list, "Book Price": book_price_list})
-                dataframe.to_csv(basedir + "\\scrappedData\\booksOnGenre{}.csv".format(genre))
+
+                dataframe.to_csv(os.path.join(basedir,"scrappedData","booksOnGenre{}.csv".format(genre)))
                 return render_template('results.html', book_details=list(collection.find({})),genre=genre)
 
             # If database does not have the data related to the genre provided by the data then browser will be opened to scrape the data
@@ -144,7 +147,7 @@ def results():
 
                 driver.quit()
                 dataframe = pd.DataFrame({"Book Name":book_name_list,"Book Price":book_price_list})
-                dataframe.to_csv(basedir+"\\scrappedData\\booksOnGenre{}.csv".format(genre))
+                dataframe.to_csv(os.path.join(basedir,"scrappedData","booksOnGenre{}.csv".format(genre)))
                 return render_template('results.html', book_details=book_details,genre=genre)
 
 

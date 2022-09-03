@@ -1,0 +1,57 @@
+@import url('base.css');
+
+body {
+    background: #7F7FD5;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.big-container{
+    padding:5rem;
+}
+.container {
+    margin: 2rem 0;
+    /* border:1px solid red; */
+}
+
+.container h1 {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid green; */
+    padding: 1rem;
+}
+
+.form-container h3 {
+    margin-right: 2rem;
+    font-size: 2rem;
+}
+
+.form-container form select {
+    width: 15rem;
+    height: 2rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+.form-container form button {
+    width: 5rem;
+    height: 2rem;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+}
+
+.form-container form button:hover {
+    background-color: #a29bfe
+}

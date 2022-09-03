@@ -1,0 +1,54 @@
+@import url('base.css');
+
+body {
+    background: #7F7FD5;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.header-container {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.header-container h2 {
+    color: black;
+    font-size: 3rem;
+}
+
+.table-container {
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.table-container table {
+    border-collapse: collapse;
+    width: 75%;
+    border: 1px solid black;
+}
+
+th {
+    height: 4rem;
+    padding: 1rem;
+    color: black;
+    border: 1px solid black;
+}
+
+td {
+    text-align: center;
+    vertical-align: center;
+    padding: 1rem;
+    color: black;
+    border: 1px solid black;
+}
+
+tr:hover {
+    background: coral;
+}
