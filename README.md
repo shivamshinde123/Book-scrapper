@@ -66,13 +66,6 @@ Execute the code
   python app.py
 ```
 
-
-
-
-
-## Acknowledgements
-
- - Many thanks to the creaters of the website http://toscrape.com/ 
 ## Authors
 
 - [@ShivamShinde](https://github.com/shivamshinde123)

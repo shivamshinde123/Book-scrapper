@@ -20,7 +20,7 @@ def results():
     ## Getting the path of the current file
     basedir = os.path.abspath(os.path.dirname(__file__))
     ## Creating a chrome driver
-    driver = webdriver.Chrome(basedir+"\\chromedriver.exe")
+    driver = webdriver.Chrome(os.path.join(basedir,"chromedriver.exe"))
     if request.method == 'POST':
         ## Getting the genre provided by the user from the html form
         genre = request.form['genre']
