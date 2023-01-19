@@ -1,6 +1,14 @@
 
 # Book Price Scrapper
-1. This scrapper will scrap the book names and their respective prices based on the genre provided by the user
+![](https://img.shields.io/github/last-commit/shivamshinde123/Book-scrapper)
+![](https://img.shields.io/github/languages/count/shivamshinde123/Book-scrapper)
+![](https://img.shields.io/github/languages/top/shivamshinde123/Book-scrapper)
+![](https://img.shields.io/github/repo-size/shivamshinde123/Book-scrapper)
+![](https://img.shields.io/github/directory-file-count/shivamshinde123/Book-scrapper)
+![](https://img.shields.io/github/license/shivamshinde123/Book-scrapper)
+
+# Problem Statement
+1. This scrapper will scrap the book names and their respective prices based on the genre provided by the user. 
 
 2. Scrapper scraps the data from the website http://books.toscrape.com/
 
